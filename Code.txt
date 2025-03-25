@@ -1,0 +1,40 @@
+pip install wordcloud
+
+# Install Libraries
+import pandas as pd
+import re
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Load the selected dataset
+selected_df = pd.read_csv("selected_data.csv")
+
+selected_df.info()
+
+selected_df.info()
+
+# Text preprocessing function
+def preprocess_text(text):
+
+# Apply preprocessing
+selected_df['processed_text'] = selected_df['text_'].astype(str).apply(preprocess_text)
+
+# Exploratory Data Analysis (EDA)
+# Distribution of ratings
+plt.figure(figsize=(8, 5))
+selected_df['rating'].value_counts().sort_index().plot(kind='bar', color='skyblue')
+plt.title('Distribution of Ratings')
+plt.xlabel('Rating')
+plt.ylabel('Count')
+plt.show()
+
+# Generate a word cloud
+text_combined = ' '.join(selected_df['processed_text'])
+wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text_combined)
+
+plt.figure(figsize=(10, 5))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.title('Word Cloud of Processed Text')
+plt.show()
