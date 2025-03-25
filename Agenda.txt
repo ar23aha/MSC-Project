@@ -1,0 +1,16 @@
+Agendas
+
+1. **Create a dataset**:  
+   - Make a file containing **10 rows** of text data.  
+   - Some rows should have **sentiments in uppercase letters**, and others in **lowercase letters**.  
+
+2. **Create a function**:  
+   - The function should take a **string as input**.  
+   - It should return **numeric values (floating-point numbers)**.  
+   - The output should be **proportional to**:  
+     - The **number of uppercase letters** in the string.  
+     - The **number of whitespace characters** in the string.  
+
+3. **Train a model**:  
+   - Use **logistic regression** to build a model.  
+   - The model should use the numeric outputs from the function as features.
