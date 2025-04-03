@@ -1,0 +1,65 @@
+import pandas as pd
+
+# Load dataset
+df_full = pd.read_csv("/content/Data Set.csv")
+
+# Select 5 CG and 5 OR reviews randomly
+df_cg = df_full[df_full["label"] == "CG"].sample(n=5, random_state=42)
+df_or = df_full[df_full["label"] == "OR"].sample(n=5, random_state=42)
+
+# Combine both samples
+df_sample = pd.concat([df_cg, df_or]).reset_index(drop=True)
+
+# Save into new csv file
+df_sample.to_csv("sample_reviews.csv", index=False)
+
+print("Sample CSV created successfully with all columns!")
+
+# Function to compute proportions
+def text_proportions(text):
+    """Compute proportions of capital letters and whitespace in a given string."""
+    if not text:
+        return 0.0, 0.0
+
+    total_chars = len(text)
+    capital_ratio = sum(1 for char in text if char.isupper()) / total_chars
+    whitespace_ratio = sum(1 for char in text if char.isspace()) / total_chars
+
+    return capital_ratio, whitespace_ratio
+
+# Load the sample file
+df_sample = pd.read_csv("sample_reviews.csv")
+
+# Compute proportions and add to DataFrame
+df_sample["capital_ratio"], df_sample["whitespace_ratio"] = zip(*df_sample["text_"].map(text_proportions))
+
+# Save the updated file
+df_sample.to_csv("sample_reviews.csv", index=False)
+
+print("Updated CSV with proportions saved successfully!")
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Load dataset
+df = pd.read_csv("/content/sample_reviews.csv")
+
+# Extract features (capital_ratio & whitespace_ratio) and labels
+X = df[["capital_ratio", "whitespace_ratio"]]
+y = df["label"].map({"CG": 1, "OR": 0})  # CG (Fake) = 1, OR (Real) = 0
+
+# Split into train & test sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+print(X_test)
+
+print(y_pred)
